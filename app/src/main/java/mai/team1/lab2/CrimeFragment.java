@@ -1,8 +1,6 @@
 package mai.team1.lab2;
 
 import android.os.Bundle;
-
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -12,8 +10,10 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-
 import androidx.fragment.app.Fragment;
+import android.app.Activity;
+import android.content.Intent;
+import java.util.Date;
 
 
 public class CrimeFragment extends Fragment {

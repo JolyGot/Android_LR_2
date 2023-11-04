@@ -1,9 +1,20 @@
 package mai.team1.lab2;
 
+import android.app.Activity;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.DatePicker;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
 public class DatePickerFragment extends DialogFragment {
 
-    public static final String EXTRA_DATE =
-            "com.bignerdranch.android.criminalintent.date";
+    public static final String EXTRA_DATE = "com.bignerdranch.android.criminalintent.date";
 
     private static final String ARG_DATE = "date";
     private DatePicker mDatePicker;
