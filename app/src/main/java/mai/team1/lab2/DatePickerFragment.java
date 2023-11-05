@@ -1,16 +1,20 @@
 package mai.team1.lab2;
 
-import android.app.Activity;
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.DatePicker;
+import android.app.Activity;//
+import android.app.Dialog;//
+import android.content.DialogInterface;//
+import android.content.Intent;//
+import android.os.Bundle;//
+import android.view.LayoutInflater;//
+import android.view.View;//
+import android.widget.DatePicker;//
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+
+import androidx.fragment.app.DialogFragment;
+import android.app.AlertDialog;
+
 
 public class DatePickerFragment extends DialogFragment {
 
@@ -65,8 +69,7 @@ public class DatePickerFragment extends DialogFragment {
         }
         Intent intent = new Intent();
         intent.putExtra(EXTRA_DATE, date);
-        getTargetFragment()
-                .onActivityResult(getTargetRequestCode(), resultCode, intent);
+        getTargetFragment().onActivityResult(getTargetRequestCode(), resultCode, intent);
     }
 
 }

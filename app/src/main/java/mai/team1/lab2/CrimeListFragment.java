@@ -11,12 +11,16 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.core.view.MenuItemCompat;
 
 import java.util.List;
+
+
 
 public class CrimeListFragment extends Fragment {
 
@@ -44,7 +48,6 @@ public class CrimeListFragment extends Fragment {
         }
 
         updateUI();
-
         return view;
     }
 
@@ -90,7 +93,8 @@ public class CrimeListFragment extends Fragment {
             default:
                 return super.onOptionsItemSelected(item);
         }
-        private void updateSubtitle () {
+    }
+        private void updateSubtitle() {
             CrimeLab crimeLab = CrimeLab.get(getActivity());
             int crimeCount = crimeLab.getCrimes().size();
             String subtitle = getString(R.string.subtitle_format, crimeCount);
@@ -110,6 +114,7 @@ public class CrimeListFragment extends Fragment {
                 mAdapter = new CrimeAdapter(crimes);
                 mCrimeRecyclerView.setAdapter(mAdapter);
             } else {
+                mAdapter.setCrimes(crimes);
                 mAdapter.notifyDataSetChanged();
             }
             updateSubtitle();
@@ -121,16 +126,24 @@ public class CrimeListFragment extends Fragment {
             private TextView mDateTextView;
             private CheckBox mSolvedCheckBox;
 
+            public void bindCrime(Crime crime) {
+                mCrime = crime;
+                mTitleTextView.setText(mCrime.getTitle());
+                mDateTextView.setText(mCrime.getDate().toString());
+                mSolvedCheckBox.setChecked(mCrime.isSolved());
+            }
             @Override
             public void onClick(View view) {
                 Intent intent = CrimePagerActivity.newIntent(getActivity(), mCrime.getId());
                 startActivity(intent);
             }
+        }
 
             private class CrimeAdapter extends RecyclerView.Adapter<CrimeHolder> {
                 private List<Crime> mCrimes;
 
                 public CrimeAdapter(List<Crime> crimes) {
+
                     mCrimes = crimes;
                 }
 
@@ -149,13 +162,13 @@ public class CrimeListFragment extends Fragment {
 
                 @Override
                 public int getItemCount() {
+
                     return mCrimes.size();
                 }
 
                 public void setCrimes(List<Crime> crimes) {
+
                     mCrimes = crimes;
                 }
             }
-        }
-    }
 }
