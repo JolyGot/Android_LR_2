@@ -4,8 +4,10 @@ package mai.team1.lab2;
 import java.util.Date;
 import java.util.UUID;
 
+
 public class Crime {
     private UUID mId;
+
     private String mTitle;
     private Date mDate;
     private boolean mSolved;
@@ -50,5 +52,9 @@ public class Crime {
     }
     public void setSuspect(String suspect) {
         mSuspect = suspect;
+    }
+
+    public String getPhotoFilename() {
+        return "IMG_" + getId().toString() + ".jpg";
     }
 }

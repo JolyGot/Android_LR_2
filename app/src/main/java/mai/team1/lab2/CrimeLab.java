@@ -5,10 +5,13 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Environment;
+
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.io.File;
 
 import mai.team1.lab2.CrimeBaseHelper;
 import mai.team1.lab2.CrimeCursorWrapper;
@@ -17,9 +20,11 @@ import mai.team1.lab2.CrimeDbSchema;
 
 public class CrimeLab {
 
+
     private Context mContext;
     private  static CrimeLab sCrimeLab;
     private SQLiteDatabase mDatabase;
+
 
     public Crime getCrime(UUID id) {
         CrimeCursorWrapper cursor = queryCrimes(
@@ -36,6 +41,16 @@ public class CrimeLab {
             cursor.close();
         }
     }
+    public File getPhotoFile(Crime crime) {
+        File filesDir = mContext.getFilesDir();
+        File externalFilesDir = mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        if (externalFilesDir == null) {
+            return new File(filesDir, crime.getPhotoFilename());
+        } else {
+            return new File(externalFilesDir, crime.getPhotoFilename());
+        }
+        }
+
 
     public void updateCrime(Crime crime) {
         String uuidString = crime.getId().toString();
@@ -97,4 +112,5 @@ public class CrimeLab {
         }
         return sCrimeLab;
     }
+
 }
