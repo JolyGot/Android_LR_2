@@ -76,7 +76,7 @@ public class CrimeListFragment extends Fragment {
         }
     }
 
-    @Override
+/*    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.new_crime:
@@ -93,7 +93,27 @@ public class CrimeListFragment extends Fragment {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }*/
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == R.id.new_crime) {
+            Crime crime = new Crime();
+            CrimeLab.get(getActivity()).addCrime(crime);
+            Intent intent = CrimePagerActivity.newIntent(getActivity(), crime.getId());
+            startActivity(intent);
+            return true;
+        }
+        else if (item.getItemId() == R.id.show_subtitle){
+        mSubtitleVisible = !mSubtitleVisible;
+        getActivity().invalidateOptionsMenu();
+        updateSubtitle();
+        return true;
+        }
+         else   return super.onOptionsItemSelected(item);
     }
+
+
         private void updateSubtitle() {
             CrimeLab crimeLab = CrimeLab.get(getActivity());
             int crimeCount = crimeLab.getCrimes().size();
@@ -126,6 +146,14 @@ public class CrimeListFragment extends Fragment {
             private TextView mDateTextView;
             private CheckBox mSolvedCheckBox;
 
+            public CrimeHolder(View itemView) {
+                super(itemView);
+                itemView.setOnClickListener(this);
+
+                mTitleTextView = (TextView) itemView.findViewById(R.id.crime_title);
+                mDateTextView = (TextView) itemView.findViewById(R.id.crime_date);
+                mSolvedCheckBox = (CheckBox) itemView.findViewById(R.id.crime_solved);
+            }
             public void bindCrime(Crime crime) {
                 mCrime = crime;
                 mTitleTextView.setText(mCrime.getTitle());
