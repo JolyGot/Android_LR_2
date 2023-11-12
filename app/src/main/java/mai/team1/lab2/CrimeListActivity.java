@@ -5,8 +5,11 @@ import android.content.Intent;
 import androidx.fragment.app.Fragment;
 
 public class CrimeListActivity extends SingleFragmentActivity
-        implements CrimeListFragment.Callbackss, CrimeFragment.Callbacks {
-
+        implements CrimeListFragment.Callbacks, CrimeFragment.Callbacks {
+    @Override
+    protected Fragment createFragment() {
+        return new CrimeListFragment();
+    }
     @Override
     protected int getLayoutResId() {
         return R.layout.activity_masterdetail;

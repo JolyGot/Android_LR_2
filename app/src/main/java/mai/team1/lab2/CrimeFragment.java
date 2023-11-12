@@ -30,13 +30,13 @@ import androidx.fragment.app.Fragment;
 import java.io.File;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 
 
 public class CrimeFragment extends Fragment {
     private Crime mCrime;
     private File mPhotoFile;
-    private Callbacks mCallbacks;
     private EditText mTitleField;
     private Button mDateButton;
     private CheckBox mSolvedCheckBox;
@@ -44,9 +44,19 @@ public class CrimeFragment extends Fragment {
     private Button mReportButton;
     private ImageButton mPhotoButton;
     private ImageView mPhotoView;
+    private Callbacks mCallbacks;
     private static final int REQUEST_CONTACT = 1;
     private static final int REQUEST_PHOTO= 2;
-
+    public interface Callbacks {
+        void onCrimeUpdated(Crime crime);
+    }
+    public static CrimeFragment newInstance(UUID crimeId) {
+    }
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mCallbacks = (Callbacks) context;
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -212,16 +222,15 @@ public class CrimeFragment extends Fragment {
     private void updatePhotoView() {
         if (mPhotoFile == null || !mPhotoFile.exists()) {
             mPhotoView.setImageDrawable(null);
+            mPhotoView.setContentDescription(
+                    getString(R.string.crime_photo_no_image_description));
         } else {
             Bitmap bitmap = PictureUtils.getScaledBitmap(
                     mPhotoFile.getPath(), getActivity());
             mPhotoView.setImageBitmap(bitmap);
+            mPhotoView.setContentDescription(
+                    getString(R.string.crime_photo_image_description));
         }
-    }
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mCallbacks = (Callbacks) context;
     }
     @Override
     public void onDetach() {
