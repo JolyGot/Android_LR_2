@@ -3,7 +3,6 @@ package mai.team1.lab2;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Point;
-
 public class PictureUtils {
     public static Bitmap getScaledBitmap(String path, int destWidth, int
             destHeight) {
