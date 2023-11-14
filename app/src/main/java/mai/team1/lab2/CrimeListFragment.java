@@ -1,5 +1,6 @@
 package mai.team1.lab2;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -49,6 +50,8 @@ public class CrimeListFragment extends Fragment {
 
         updateUI();
         return view;
+
+
     }
 
     @Override
@@ -56,6 +59,7 @@ public class CrimeListFragment extends Fragment {
         super.onResume();
         updateUI();
     }
+
 
     @Override
     public void onSaveInstanceState(Bundle outState) {

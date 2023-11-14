@@ -1,14 +1,17 @@
 package mai.team1.lab2;
 
 
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
 
 import mai.team1.lab2.database.CrimeBaseHelper;
 import mai.team1.lab2.database.CrimeCursorWrapper;
@@ -18,13 +21,13 @@ import mai.team1.lab2.database.CrimeDbSchema;
 public class CrimeLab {
 
     private Context mContext;
-    private  static CrimeLab sCrimeLab;
+    private static CrimeLab sCrimeLab;
     private SQLiteDatabase mDatabase;
 
     public Crime getCrime(UUID id) {
         CrimeCursorWrapper cursor = queryCrimes(
                 CrimeDbSchema.CrimeTable.Cols.UUID + " = ?",
-                new String[] { id.toString() }
+                new String[]{id.toString()}
         );
         try {
             if (cursor.getCount() == 0) {
@@ -42,8 +45,9 @@ public class CrimeLab {
         ContentValues values = getContentValues(crime);
         mDatabase.update(CrimeDbSchema.CrimeTable.NAME, values,
                 CrimeDbSchema.CrimeTable.Cols.UUID + " = ?",
-                new String[] { uuidString });
+                new String[]{uuidString});
     }
+
     private CrimeCursorWrapper queryCrimes(String whereClause, String[] whereArgs) {
         Cursor cursor = mDatabase.query(
                 CrimeDbSchema.CrimeTable.NAME,
@@ -56,6 +60,7 @@ public class CrimeLab {
         );
         return new CrimeCursorWrapper(cursor);
     }
+
     private static ContentValues getContentValues(Crime crime) {
         ContentValues values = new ContentValues();
         values.put(CrimeDbSchema.CrimeTable.Cols.UUID, crime.getId().toString());
@@ -70,6 +75,7 @@ public class CrimeLab {
         ContentValues values = getContentValues(c);
         mDatabase.insert(CrimeDbSchema.CrimeTable.NAME, null, values);
     }
+
     public List<Crime> getCrimes() {
         List<Crime> crimes = new ArrayList<>();
         CrimeCursorWrapper cursor = queryCrimes(null, null);
@@ -90,8 +96,8 @@ public class CrimeLab {
         mDatabase = new CrimeBaseHelper(mContext).getWritableDatabase();
     }
 
-    public static CrimeLab get(Context context){
-        if (sCrimeLab == null){
+    public static CrimeLab get(Context context) {
+        if (sCrimeLab == null) {
             sCrimeLab = new CrimeLab(context);
         }
         return sCrimeLab;

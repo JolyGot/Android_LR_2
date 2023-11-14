@@ -1,5 +1,6 @@
 package mai.team1.lab2;
 
+
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+
 import androidx.fragment.app.Fragment;
 import android.app.Activity;
 import android.content.Intent;
@@ -44,6 +46,7 @@ public class CrimeFragment extends Fragment {
         mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);
     }
     @Override
+
     public void onPause() {
         super.onPause();
         CrimeLab.get(getActivity()).updateCrime(mCrime);
@@ -53,6 +56,11 @@ public class CrimeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_crime, container, false);
         mTitleField = (EditText)v.findViewById(R.id.crime_title);
+
+
+
+        mTitleField = (EditText) v.findViewById(R.id.crime_title);
+
         mTitleField.setText(mCrime.getTitle());
         mTitleField.addTextChangedListener(new TextWatcher() {
             @Override
@@ -71,6 +79,7 @@ public class CrimeFragment extends Fragment {
             public void afterTextChanged(Editable s) {
 
             }
+
         });
 
         mSolvedCheckBox = (CheckBox)v.findViewById(R.id.crime_solved);
@@ -91,6 +100,7 @@ public class CrimeFragment extends Fragment {
                 dialog.show(manager, DIALOG_DATE);
             }
         });
+
         mSolvedCheckBox = (CheckBox)v.findViewById(R.id.crime_solved);
         mSolvedCheckBox.setChecked(mCrime.isSolved());
         mSolvedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -101,6 +111,7 @@ public class CrimeFragment extends Fragment {
         });
         return v;
     }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
