@@ -1,6 +1,9 @@
 package mai.team1.lab2;
 
 
+import static java.text.DateFormat.getDateInstance;
+
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,14 +13,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
-
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.core.view.MenuItemCompat;
+
 
 import java.util.List;
 
@@ -30,12 +33,14 @@ public class CrimeListFragment extends Fragment {
     private CrimeAdapter mAdapter;
     private boolean mSubtitleVisible;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setHasOptionsMenu(true);
     }
-
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_crime_list, container, false);
@@ -67,6 +72,8 @@ public class CrimeListFragment extends Fragment {
         outState.putBoolean(SAVED_SUBTITLE_VISIBLE, mSubtitleVisible);
     }
 
+
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -80,26 +87,10 @@ public class CrimeListFragment extends Fragment {
         }
     }
 
-/*    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.new_crime:
-                Crime crime = new Crime();
-                CrimeLab.get(getActivity()).addCrime(crime);
-                Intent intent = CrimePagerActivity.newIntent(getActivity(), crime.getId());
-                startActivity(intent);
-                return true;
-            case R.id.show_subtitle:
-                mSubtitleVisible = !mSubtitleVisible;
-                getActivity().invalidateOptionsMenu();
-                updateSubtitle();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }*/
+
+
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected( MenuItem item) {
 
         if (item.getItemId() == R.id.new_crime) {
             Crime crime = new Crime();
@@ -116,7 +107,6 @@ public class CrimeListFragment extends Fragment {
         }
          else   return super.onOptionsItemSelected(item);
     }
-
 
         private void updateSubtitle() {
             CrimeLab crimeLab = CrimeLab.get(getActivity());
@@ -138,7 +128,7 @@ public class CrimeListFragment extends Fragment {
                 mAdapter = new CrimeAdapter(crimes);
                 mCrimeRecyclerView.setAdapter(mAdapter);
             } else {
-                mAdapter.setCrimes(crimes);
+
                 mAdapter.notifyDataSetChanged();
             }
             updateSubtitle();
@@ -150,6 +140,8 @@ public class CrimeListFragment extends Fragment {
             private TextView mDateTextView;
             private CheckBox mSolvedCheckBox;
 
+
+
             public CrimeHolder(View itemView) {
                 super(itemView);
                 itemView.setOnClickListener(this);
@@ -157,16 +149,19 @@ public class CrimeListFragment extends Fragment {
                 mTitleTextView = (TextView) itemView.findViewById(R.id.crime_title);
                 mDateTextView = (TextView) itemView.findViewById(R.id.crime_date);
                 mSolvedCheckBox = (CheckBox) itemView.findViewById(R.id.crime_solved);
+
             }
+
             public void bindCrime(Crime crime) {
                 mCrime = crime;
                 mTitleTextView.setText(mCrime.getTitle());
-                mDateTextView.setText(mCrime.getDate().toString());
                 mSolvedCheckBox.setChecked(mCrime.isSolved());
+                mDateTextView.setText(getDateInstance().format(mCrime.getDate()));
+
             }
             @Override
             public void onClick(View view) {
-                Intent intent = CrimePagerActivity.newIntent(getActivity(), mCrime.getId());
+                Intent intent = CrimeActivity.newIntent(getActivity(), mCrime.getId());
                 startActivity(intent);
             }
         }
@@ -198,9 +193,6 @@ public class CrimeListFragment extends Fragment {
                     return mCrimes.size();
                 }
 
-                public void setCrimes(List<Crime> crimes) {
 
-                    mCrimes = crimes;
-                }
             }
 }
