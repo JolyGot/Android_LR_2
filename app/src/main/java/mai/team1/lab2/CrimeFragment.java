@@ -1,6 +1,8 @@
 package mai.team1.lab2;
 
 
+import static java.text.DateFormat.getDateInstance;
+
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -55,8 +57,6 @@ public class CrimeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_crime, container, false);
-        mTitleField = (EditText)v.findViewById(R.id.crime_title);
-
 
 
         mTitleField = (EditText) v.findViewById(R.id.crime_title);
@@ -91,6 +91,7 @@ public class CrimeFragment extends Fragment {
         });
         mDateButton = (Button) v.findViewById(R.id.crime_date);
         updateDate();
+        mDateButton.setText(getDateInstance().format(mCrime.getDate()));
         mDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,7 +124,7 @@ public class CrimeFragment extends Fragment {
             Date date = (Date) data
                     .getSerializableExtra(DatePickerFragment.EXTRA_DATE);
             mCrime.setDate(date);
-            updateDate();
+            mDateButton.setText(getDateInstance().format(mCrime.getDate()));
         }
     }
 
