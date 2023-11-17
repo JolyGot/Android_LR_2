@@ -59,17 +59,17 @@ public class CrimeFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mCallbacks = (Callbacks) context;
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         UUID crimeId = (UUID) getArguments().getSerializable(ARG_CRIME_ID);
         mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);
         mPhotoFile = CrimeLab.get(getActivity()).getPhotoFile(mCrime);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        CrimeLab.get(getActivity()).updateCrime(mCrime);
     }
 
     public static CrimeFragment newInstance(UUID crimeId) {
@@ -80,12 +80,17 @@ public class CrimeFragment extends Fragment {
         return fragment;
 
     }
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mCallbacks = (Callbacks) context;
+    }
+
 
     @Override
-
-    public void onPause() {
-        super.onPause();
-        CrimeLab.get(getActivity()).updateCrime(mCrime);
+    public void onDetach() {
+        super.onDetach();
+        mCallbacks = null;
     }
 
     @Override
@@ -256,6 +261,7 @@ public class CrimeFragment extends Fragment {
     private void updateDate() {
         mDateButton.setText(getDateInstance().format(mCrime.getDate()));
     }
+
     private String getCrimeReport() {
         String solvedString = null;
         if (mCrime.isSolved()) {
@@ -289,13 +295,6 @@ public class CrimeFragment extends Fragment {
                     getString(R.string.crime_photo_image_description));
         }
     }
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mCallbacks = null;
-
-            mDateButton.setText(getDateInstance().format(mCrime.getDate()));
-        }
     }
 
 

@@ -21,8 +21,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.core.view.MenuItemCompat;
 import android.content.Context;
-
-
 import java.util.List;
 
 
@@ -58,7 +56,7 @@ public class CrimeListFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
-    @SuppressLint("MissingInflatedId")
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_crime_list, container, false);
@@ -124,7 +122,7 @@ public class CrimeListFragment extends Fragment {
         private void updateSubtitle() {
             CrimeLab crimeLab = CrimeLab.get(getActivity());
             int crimeCount = crimeLab.getCrimes().size();
-            @SuppressLint("StringFormatMatches") String subtitle = getString(R.string.subtitle_format, crimeCount);
+            String subtitle = getString(R.string.subtitle_format, crimeCount);
 
             if (!mSubtitleVisible) {
                 subtitle = null;
@@ -174,6 +172,8 @@ public class CrimeListFragment extends Fragment {
             }
             @Override
             public void onClick(View view) {
+                Intent intent = CrimePagerActivity.newIntent(getActivity(), mCrime.getId());
+                startActivity(intent);
                 mCallbacks.onCrimeSelected(mCrime);
             }
         }
@@ -207,6 +207,8 @@ public class CrimeListFragment extends Fragment {
                 public void setCrimes(List<Crime> crimes) {
                     mCrimes = crimes;
                 }
+
+
 
 
             }

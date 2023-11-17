@@ -34,6 +34,7 @@
             android:contentDescription="@string/crime_photo_button_description"/>
     </LinearLayout>
 
+
     <TextView
         style="?android:listSeparatorTextViewStyle"
         android:layout_width="match_parent"

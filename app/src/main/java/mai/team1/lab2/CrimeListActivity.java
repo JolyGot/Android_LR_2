@@ -6,7 +6,7 @@ import android.content.Intent;
 import androidx.fragment.app.Fragment;
 
 public class CrimeListActivity extends SingleFragmentActivity
-        implements CrimeListFragment.Callbacks{
+        implements CrimeListFragment.Callbacks, CrimeFragment.Callbacks{
 
         @Override
     protected Fragment createFragment() {

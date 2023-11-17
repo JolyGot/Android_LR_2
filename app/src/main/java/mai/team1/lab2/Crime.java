@@ -28,6 +28,7 @@ public class Crime {
 
         mTitle = title;
     }
+
     public Date getDate() {
 
         return mDate;

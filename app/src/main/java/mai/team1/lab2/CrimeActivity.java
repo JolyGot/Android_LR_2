@@ -6,7 +6,7 @@ import android.content.Intent;
 import androidx.fragment.app.Fragment;
 import java.util.UUID;
 
-public abstract class CrimeActivity extends SingleFragmentActivity {
+public class CrimeActivity extends SingleFragmentActivity {
     @Override
     protected Fragment createFragment() {
         UUID crimeId = (UUID) getIntent().getSerializableExtra(EXTRA_CRIME_ID);
