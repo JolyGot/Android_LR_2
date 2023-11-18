@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 public class CrimeListActivity extends SingleFragmentActivity
         implements CrimeListFragment.Callbacks, CrimeFragment.Callbacks{
 
+
         @Override
     protected Fragment createFragment() {
         return new CrimeListFragment();
@@ -31,9 +32,7 @@ public class CrimeListActivity extends SingleFragmentActivity
         }
     }
     public void onCrimeUpdated(Crime crime) {
-        CrimeListFragment listFragment = (CrimeListFragment)
-                getSupportFragmentManager()
- .findFragmentById(R.id.fragment_container);
+        CrimeListFragment listFragment = (CrimeListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
         listFragment.updateUI();
     }
 

@@ -61,6 +61,7 @@ public class CrimeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         UUID crimeId = (UUID) getArguments().getSerializable(ARG_CRIME_ID);
         mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);
         mPhotoFile = CrimeLab.get(getActivity()).getPhotoFile(mCrime);
@@ -70,6 +71,7 @@ public class CrimeFragment extends Fragment {
     public void onPause() {
         super.onPause();
         CrimeLab.get(getActivity()).updateCrime(mCrime);
+        updateCrime();
     }
 
     public static CrimeFragment newInstance(UUID crimeId) {
@@ -131,6 +133,7 @@ public class CrimeFragment extends Fragment {
             }
         });
         mDateButton = (Button) v.findViewById(R.id.crime_date);
+        updateDate();
         mDateButton.setText(mCrime.getDate().toString());
         mDateButton.setText(getDateInstance().format(mCrime.getDate()));
         mDateButton.setOnClickListener(new View.OnClickListener(){
@@ -180,8 +183,7 @@ public class CrimeFragment extends Fragment {
             mSuspectButton.setText(mCrime.getSuspect());
         }
         PackageManager packageManager = getActivity().getPackageManager();
-        if (packageManager.resolveActivity(pickContact,
-                PackageManager.MATCH_DEFAULT_ONLY) == null) {
+        if (packageManager.resolveActivity(pickContact, PackageManager.MATCH_DEFAULT_ONLY) == null) {
             mSuspectButton.setEnabled(false);
         }
 
@@ -208,6 +210,7 @@ public class CrimeFragment extends Fragment {
         });
         mPhotoView = (ImageView) v.findViewById(R.id.crime_photo);
         updatePhotoView();
+        updateDate();
         return v;
     }
 
@@ -295,6 +298,7 @@ public class CrimeFragment extends Fragment {
                     getString(R.string.crime_photo_image_description));
         }
     }
+
     }
 
 

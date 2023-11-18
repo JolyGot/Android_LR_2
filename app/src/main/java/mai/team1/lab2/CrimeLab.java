@@ -20,7 +20,7 @@ public class CrimeLab {
     private Context mContext;
     private static CrimeLab sCrimeLab;
     private SQLiteDatabase mDatabase;
-    private File mPhotoFile;
+
 
 
     public Crime getCrime(UUID id) {
