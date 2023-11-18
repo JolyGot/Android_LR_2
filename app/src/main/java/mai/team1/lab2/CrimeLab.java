@@ -42,14 +42,14 @@ public class CrimeLab {
     public void updateCrime(Crime crime) {
         String uuidString = crime.getId().toString();
         ContentValues values = getContentValues(crime);
-        mDatabase.update(CrimeDbSchema.CrimeTable.NAME, values,
-                CrimeDbSchema.CrimeTable.Cols.UUID + " = ?",
+        mDatabase.update(CrimeTable.NAME, values,
+                CrimeTable.Cols.UUID + " = ?",
                 new String[]{uuidString});
     }
 
     private CrimeCursorWrapper queryCrimes(String whereClause, String[] whereArgs) {
         Cursor cursor = mDatabase.query(
-                CrimeDbSchema.CrimeTable.NAME,
+                CrimeTable.NAME,
                 null, // columns - с null выбираются все столбцы
                 whereClause,
                 whereArgs,

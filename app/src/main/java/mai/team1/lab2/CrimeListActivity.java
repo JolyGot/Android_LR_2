@@ -2,7 +2,6 @@ package mai.team1.lab2;
 
 
 import android.content.Intent;
-
 import androidx.fragment.app.Fragment;
 
 public class CrimeListActivity extends SingleFragmentActivity
