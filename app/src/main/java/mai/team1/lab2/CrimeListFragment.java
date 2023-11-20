@@ -156,21 +156,20 @@ public class CrimeListFragment extends Fragment {
 
                 mTitleTextView = (TextView) itemView.findViewById(R.id.crime_title);
                 mDateTextView = (TextView) itemView.findViewById(R.id.crime_date);
-                mSolvedCheckBox = (CheckBox) itemView.findViewById(R.id.crime_solved);
+//                mSolvedCheckBox = (CheckBox) itemView.findViewById(R.id.crime_solved);
 
             }
 
             public void bindCrime(Crime crime) {
                 mCrime = crime;
                 mTitleTextView.setText(mCrime.getTitle());
-                mSolvedCheckBox.setChecked(mCrime.isSolved());
+//                mSolvedCheckBox.setChecked(mCrime.isSolved());
                 mDateTextView.setText(getDateInstance().format(mCrime.getDate()));
 
             }
             @Override
             public void onClick(View view) {
-                Intent intent = CrimePagerActivity.newIntent(getActivity(), mCrime.getId());
-                startActivity(intent);
+
                 mCallbacks.onCrimeSelected(mCrime);
             }
         }
