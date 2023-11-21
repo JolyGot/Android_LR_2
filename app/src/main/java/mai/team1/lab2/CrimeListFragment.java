@@ -3,6 +3,7 @@ package mai.team1.lab2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +15,14 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Date;
 import java.util.List;
 
 public class CrimeListFragment  extends Fragment {
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
     private ImageView mSolvedImageView;
+    private static int mCrimeIndex;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -46,7 +49,7 @@ public class CrimeListFragment  extends Fragment {
             mAdapter = new CrimeAdapter(crimes);
             mCrimeRecyclerView.setAdapter(mAdapter);
         } else {
-            mAdapter.notifyDataSetChanged();
+            mAdapter.notifyItemChanged(mCrimeIndex);
         }
     }
         private class CrimeHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -65,12 +68,17 @@ public class CrimeListFragment  extends Fragment {
                 public void bind (Crime crime){
                 mCrime = crime;
                 mTitleTextView.setText(mCrime.getTitle());
-                mDateTextView.setText(mCrime.getDate().toString());
                 mSolvedImageView.setVisibility(crime.isSolved() ? View.VISIBLE : View.GONE);
+                Date date = crime.getDate();
+                CharSequence cs = "EEEE, MMMM dd, yyyy";
+                CharSequence re = DateFormat.format(cs,date);
+                String dateFormat = re.toString();
+                mDateTextView.setText(dateFormat);
             }
                 @Override
                 public void onClick (View view){
                     Intent intent = CrimeActivity.newIntent(getActivity(), mCrime.getId());
+                    mCrimeIndex = getAdapterPosition();
                     startActivity(intent);
             }
     }
