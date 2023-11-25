@@ -2,16 +2,17 @@ package mai.team1.lab2;
 
 
 import static java.text.DateFormat.getDateInstance;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -146,6 +147,7 @@ public class CrimeListFragment extends Fragment {
             private Crime mCrime;
             private TextView mTitleTextView;
             private TextView mDateTextView;
+            private TextView mTimeTextView;
             private CheckBox mSolvedCheckBox;
 
 
@@ -156,6 +158,7 @@ public class CrimeListFragment extends Fragment {
 
                 mTitleTextView = (TextView) itemView.findViewById(R.id.crime_title);
                 mDateTextView = (TextView) itemView.findViewById(R.id.crime_date);
+                mTimeTextView = (TextView) itemView.findViewById(R.id.crime_time);
 //                mSolvedCheckBox = (CheckBox) itemView.findViewById(R.id.crime_solved);
 
             }
@@ -165,7 +168,7 @@ public class CrimeListFragment extends Fragment {
                 mTitleTextView.setText(mCrime.getTitle());
 //                mSolvedCheckBox.setChecked(mCrime.isSolved());
                 mDateTextView.setText(getDateInstance().format(mCrime.getDate()));
-
+                mTimeTextView.setText(DateFormat.format("kk:mm", mCrime.getDate()));
             }
             @Override
             public void onClick(View view) {

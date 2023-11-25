@@ -30,6 +30,7 @@ import androidx.fragment.app.Fragment;
 import java.util.Date;
 import java.util.UUID;
 import androidx.fragment.app.FragmentManager;
+import androidx.viewpager.widget.ViewPager;
 import java.io.File;
 import java.util.List;
 
@@ -47,16 +48,22 @@ public class CrimeFragment extends Fragment {
     private Button mDateButton;
     private CheckBox mSolvedCheckBox;
     private Button mSuspectButton;
+    private Button mFirstButton;
+    private Button mLastButton;
     private Button mReportButton;
     private ImageButton mPhotoButton;
     private ImageView mPhotoView;
     private Callbacks mCallbacks;
     private static final int REQUEST_CONTACT = 1;
     private static final int REQUEST_PHOTO = 2;
+    private static final String DIALOG_TIME = "time";
+    private static final int REQUEST_TIME = -1;
+    private Button mTimeButton;
 
     public interface Callbacks {
         void onCrimeUpdated(Crime crime);
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -124,6 +131,7 @@ public class CrimeFragment extends Fragment {
 
         });
 
+
         mSolvedCheckBox = (CheckBox) v.findViewById(R.id.crime_solved);
         mSolvedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -146,6 +154,18 @@ public class CrimeFragment extends Fragment {
             }
         });
 
+        mTimeButton = (Button) v.findViewById(R.id.crime_time);
+        updateTime();
+        mTimeButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick (View v){
+                FragmentManager manager = getFragmentManager();
+                TimePickerFragment dialog = TimePickerFragment.newInstance(mCrime.getDate());
+                dialog.setTargetFragment(CrimeFragment.this, REQUEST_TIME);
+                dialog.show(manager, DIALOG_TIME);
+            }
+        });
+
         mSolvedCheckBox =(CheckBox)v.findViewById(R.id.crime_solved);
         mSolvedCheckBox.setChecked(mCrime.isSolved());
         mSolvedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
@@ -156,7 +176,24 @@ public class CrimeFragment extends Fragment {
             }
         });
 
+        mFirstButton = (Button) v.findViewById(R.id.first_crime_button);
+        mFirstButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ViewPager pager = (ViewPager) getActivity().findViewById(R.id.crime_view_pager);
+                pager.setCurrentItem(0);
 
+            }
+        });
+
+        mLastButton = (Button) v.findViewById(R.id.last_crime_button);
+        mLastButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ViewPager pager = (ViewPager) getActivity().findViewById(R.id.crime_view_pager);
+                pager.setCurrentItem(CrimeLab.get(getActivity()).getCrimes().size()-1);
+            }
+        });
 
         mReportButton = (Button) v.findViewById(R.id.crime_report);
         mReportButton.setOnClickListener(new View.OnClickListener() {
@@ -219,12 +256,16 @@ public class CrimeFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != Activity.RESULT_OK) {
             return;
-        }
-        if (requestCode == REQUEST_DATE) {
+        } else         if (requestCode == REQUEST_TIME){
+            Date time = (Date) data
+                    .getSerializableExtra(DatePickerFragment.EXTRA_DATE);
+            mCrime.setTime(time);
+            updateCrime();
+            updateTime();
+        } else if (requestCode == REQUEST_DATE) {
             Date date = (Date) data
                     .getSerializableExtra(DatePickerFragment.EXTRA_DATE);
             mCrime.setDate(date);
-
             updateCrime();
             updateDate();
         } else if (requestCode == REQUEST_CONTACT && data != null) {
@@ -297,6 +338,9 @@ public class CrimeFragment extends Fragment {
             mPhotoView.setContentDescription(
                     getString(R.string.crime_photo_image_description));
         }
+    }
+    private void updateTime() {
+        mTimeButton.setText(DateFormat.format("kk:mm", mCrime.getDate()));
     }
 
     }
