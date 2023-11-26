@@ -21,7 +21,13 @@ public class CrimeLab {
     private static CrimeLab sCrimeLab;
     private SQLiteDatabase mDatabase;
 
-
+    public void removeCrime(Crime c) {
+        //mCrimes.remove(c);
+        String uuidString = c.getId().toString();
+        mDatabase.delete(CrimeTable.NAME,
+        CrimeTable.Cols.UUID + " = ?",
+        new String[] { uuidString });
+    }
 
     public Crime getCrime(UUID id) {
         CrimeCursorWrapper cursor = queryCrimes(

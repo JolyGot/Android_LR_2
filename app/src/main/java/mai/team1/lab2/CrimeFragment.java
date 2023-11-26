@@ -17,6 +17,9 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -64,6 +67,19 @@ public class CrimeFragment extends Fragment {
         void onCrimeUpdated(Crime crime);
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.fragment_crime, menu);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.delete_crime) {
+            CrimeLab.get(getActivity()).removeCrime(mCrime);
+            getActivity().finish();
+            return true;
+        }else return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -177,21 +193,42 @@ public class CrimeFragment extends Fragment {
         });
 
         mFirstButton = (Button) v.findViewById(R.id.first_crime_button);
+        mLastButton = (Button) v.findViewById(R.id.last_crime_button);
+        ViewPager pager = (ViewPager) getActivity().findViewById(R.id.crime_view_pager);
         mFirstButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ViewPager pager = (ViewPager) getActivity().findViewById(R.id.crime_view_pager);
                 pager.setCurrentItem(0);
-
             }
         });
 
-        mLastButton = (Button) v.findViewById(R.id.last_crime_button);
         mLastButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ViewPager pager = (ViewPager) getActivity().findViewById(R.id.crime_view_pager);
                 pager.setCurrentItem(CrimeLab.get(getActivity()).getCrimes().size()-1);
+            }
+        });
+        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                if(position == 0){
+                    mLastButton.setVisibility(View.VISIBLE);
+                    mFirstButton.setVisibility(View.INVISIBLE);
+                }
+                else if (position == CrimeLab.get(getActivity()).getCrimes().size()-1) {
+                    mLastButton.setVisibility(View.INVISIBLE);
+                    mFirstButton.setVisibility(View.VISIBLE);
+                }
+                else {
+                    mLastButton.setVisibility(View.VISIBLE);
+                    mFirstButton.setVisibility(View.VISIBLE);
+                }
+            }
+            @Override
+            public void onPageSelected(int position) {
+            }
+            @Override
+            public void onPageScrollStateChanged(int state) {
             }
         });
 
@@ -342,8 +379,7 @@ public class CrimeFragment extends Fragment {
     private void updateTime() {
         mTimeButton.setText(DateFormat.format("kk:mm", mCrime.getDate()));
     }
-
-    }
+}
 
 
 

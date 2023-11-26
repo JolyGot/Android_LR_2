@@ -32,6 +32,8 @@ public class CrimeListFragment extends Fragment {
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
     private boolean mSubtitleVisible;
+    private TextView mNullCrimeListTextView;
+    private Button mAddCrimeButton;
 
     private mai.team1.lab2.CrimeListFragment.Callbacks mCallbacks;
 
@@ -65,6 +67,19 @@ public class CrimeListFragment extends Fragment {
         if (savedInstanceState != null) {
             mSubtitleVisible = savedInstanceState.getBoolean(SAVED_SUBTITLE_VISIBLE);
         }
+
+        mNullCrimeListTextView = (TextView)view.findViewById(R.id.null_crime_list);
+        mAddCrimeButton = (Button)view.findViewById(R.id.add_crime);
+        mAddCrimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Crime crime = new Crime();
+                CrimeLab.get(getActivity()).addCrime(crime);
+                Intent intent = CrimePagerActivity.newIntent(getActivity(), crime.getId());
+                startActivity(intent);
+            }
+        });
+
         return view;
     }
 
@@ -119,8 +134,11 @@ public class CrimeListFragment extends Fragment {
 
         private void updateSubtitle() {
             CrimeLab crimeLab = CrimeLab.get(getActivity());
-            int crimeCount = crimeLab.getCrimes().size();
-            String subtitle = getString(R.string.subtitle_format, crimeCount);
+            //int crimeCount = crimeLab.getCrimes().size();
+            //String subtitle = getString(R.string.subtitle_format, crimeCount);
+
+            int crimeSize = crimeLab.getCrimes().size();
+            String subtitle = getResources().getQuantityString(R.plurals.subtitle_plural, crimeSize, crimeSize);
 
             if (!mSubtitleVisible) {
                 subtitle = null;
@@ -139,6 +157,13 @@ public class CrimeListFragment extends Fragment {
             } else {
                 mAdapter.setCrimes(crimes);
                 mAdapter.notifyDataSetChanged();
+            }
+            if (crimes.size() != 0) {
+                mNullCrimeListTextView.setVisibility(View.INVISIBLE);
+                mAddCrimeButton.setVisibility(View.INVISIBLE);
+            } else {
+                mNullCrimeListTextView.setVisibility(View.VISIBLE);
+                mAddCrimeButton.setVisibility(View.VISIBLE);
             }
             updateSubtitle();
         }
