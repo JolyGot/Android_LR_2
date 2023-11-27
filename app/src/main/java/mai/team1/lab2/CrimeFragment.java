@@ -25,6 +25,8 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+
+import androidx.core.app.ShareCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import java.util.Date;
@@ -159,16 +161,15 @@ public class CrimeFragment extends Fragment {
 
 
         mReportButton = (Button) v.findViewById(R.id.crime_report);
-        mReportButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent i = new Intent(Intent.ACTION_SEND);
-                i.setType("text/plain");
-                i.putExtra(Intent.EXTRA_TEXT, getCrimeReport());
-                i.putExtra(Intent.EXTRA_SUBJECT,
-                        getString(R.string.crime_report_subject));
-                i = Intent.createChooser(i, getString(R.string.send_report));
-                startActivity(i);
-            }
+        mReportButton.setOnClickListener(v12 -> {
+            Intent i = ShareCompat.IntentBuilder.from(getActivity())
+                    .setType("text/plain")
+                    .setText(getCrimeReport())
+                    .setSubject(getString(R.string.crime_report_subject))
+                    .setChooserTitle(getString(R.string.send_report))
+                    .createChooserIntent();
+            startActivity(i);
+
         });
 
 
