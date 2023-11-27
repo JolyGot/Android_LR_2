@@ -9,6 +9,7 @@ import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
@@ -19,6 +20,7 @@ import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -289,14 +291,26 @@ public class CrimeFragment extends Fragment {
     private void updatePhotoView() {
         if (mPhotoFile == null || !mPhotoFile.exists()) {
             mPhotoView.setImageDrawable(null);
-            mPhotoView.setContentDescription(
-                    getString(R.string.crime_photo_no_image_description));
+            mPhotoView.setContentDescription(getString(R.string.crime_photo_no_image_description));
         } else {
-            Bitmap bitmap = PictureUtils.getScaledBitmap(
-                    mPhotoFile.getPath(), getActivity());
-            mPhotoView.setImageBitmap(bitmap);
-            mPhotoView.setContentDescription(
-                    getString(R.string.crime_photo_image_description));
+            ViewTreeObserver observer = mPhotoView.getViewTreeObserver();
+            observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    // Ожидание прохода обработки макета
+                    Bitmap bitmap = PictureUtils.getScaledBitmap(mPhotoFile.getPath(), mPhotoView.getWidth(), mPhotoView.getHeight());
+                    mPhotoView.setImageBitmap(bitmap);
+                    mPhotoView.setContentDescription(getString(R.string.crime_photo_image_description));
+
+                    // Удаление слушателя
+                    ViewTreeObserver observer = mPhotoView.getViewTreeObserver();
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                        observer.removeGlobalOnLayoutListener(this);
+                    } else {
+                        observer.removeOnGlobalLayoutListener(this);
+                    }
+                }
+            });
         }
     }
 
