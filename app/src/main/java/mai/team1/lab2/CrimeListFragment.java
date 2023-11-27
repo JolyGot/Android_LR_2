@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.core.view.MenuItemCompat;
 import android.content.Context;
 import java.util.List;
+import android.text.format.DateFormat;
 
 
 
@@ -165,7 +166,7 @@ public class CrimeListFragment extends Fragment {
                 mTitleTextView.setText(mCrime.getTitle());
 //                mSolvedCheckBox.setChecked(mCrime.isSolved());
                 mDateTextView.setText(getDateInstance().format(mCrime.getDate()));
-
+                mDateTextView.setText(DateFormat.getDateFormat(getContext()).format(mCrime.getDate()));
             }
             @Override
             public void onClick(View view) {

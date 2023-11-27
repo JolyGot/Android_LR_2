@@ -40,6 +40,9 @@ import java.util.List;
 
 
 
+
+
+
 public class CrimeFragment extends Fragment {
     private static final String ARG_CRIME_ID = "crime_id";
     private static final String DIALOG_DATE = "DialogDate";
@@ -55,6 +58,7 @@ public class CrimeFragment extends Fragment {
     private ImageButton mPhotoButton;
     private ImageView mPhotoView;
     private Callbacks mCallbacks;
+
     private static final int REQUEST_CONTACT = 1;
     private static final int REQUEST_PHOTO = 2;
 
@@ -266,6 +270,7 @@ public class CrimeFragment extends Fragment {
     }
     private void updateDate() {
         mDateButton.setText(getDateInstance().format(mCrime.getDate()));
+        mDateButton.setText(DateFormat.getDateFormat(getContext()).format(mCrime.getDate()));
     }
 
     private String getCrimeReport() {
