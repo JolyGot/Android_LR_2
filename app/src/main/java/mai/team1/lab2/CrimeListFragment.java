@@ -22,6 +22,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.core.view.MenuItemCompat;
 import android.content.Context;
+
+import java.util.Date;
 import java.util.List;
 
 
@@ -34,6 +36,8 @@ public class CrimeListFragment extends Fragment {
     private boolean mSubtitleVisible;
     private TextView mNullCrimeListTextView;
     private Button mAddCrimeButton;
+
+    private static int mCrimeIndex;
 
     private mai.team1.lab2.CrimeListFragment.Callbacks mCallbacks;
 
@@ -156,7 +160,7 @@ public class CrimeListFragment extends Fragment {
                 mCrimeRecyclerView.setAdapter(mAdapter);
             } else {
                 mAdapter.setCrimes(crimes);
-                mAdapter.notifyDataSetChanged();
+                mAdapter.notifyItemChanged(mCrimeIndex);
             }
             if (crimes.size() != 0) {
                 mNullCrimeListTextView.setVisibility(View.INVISIBLE);
@@ -193,16 +197,19 @@ public class CrimeListFragment extends Fragment {
             public void bindCrime(Crime crime) {
                 mCrime = crime;
                 mTitleTextView.setText(mCrime.getTitle());
-//              mSolvedCheckBox.setChecked(mCrime.isSolved());
-                mDateTextView.setText(getDateInstance().format(mCrime.getDate()));
+                mSolvedImageView.setVisibility(crime.isSolved() ? View.VISIBLE : View.GONE);
+                Date date = crime.getDate();
+                CharSequence cs = "EEEE, MMMM dd, yyyy";
+                CharSequence re = DateFormat.format(cs,date);
+                String dateFormat = re.toString();
+                mDateTextView.setText(dateFormat);
                 mTimeTextView.setText(DateFormat.format("kk:mm", mCrime.getDate()));
-                mSolvedImageView.setVisibility(crime.isSolved() ? View.VISIBLE :
-                        View.GONE);
             }
             @Override
             public void onClick(View view) {
 
                 mCallbacks.onCrimeSelected(mCrime);
+                mCrimeIndex = getAdapterPosition();
             }
         }
 
