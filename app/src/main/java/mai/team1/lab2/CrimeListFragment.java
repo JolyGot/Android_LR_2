@@ -160,7 +160,7 @@ public class CrimeListFragment extends Fragment {
                 mCrimeRecyclerView.setAdapter(mAdapter);
             } else {
                 mAdapter.setCrimes(crimes);
-                mAdapter.notifyItemChanged(mCrimeIndex);
+                mAdapter.notifyDataSetChanged();
             }
             if (crimes.size() != 0) {
                 mNullCrimeListTextView.setVisibility(View.INVISIBLE);
