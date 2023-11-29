@@ -28,6 +28,10 @@ public class CrimeLab {
         CrimeTable.Cols.UUID + " = ?",
         new String[] { uuidString });
     }
+    public void deleteCrime(Crime crime) {
+        String crimeId = crime.getId().toString();
+        mDatabase.delete(CrimeTable.NAME, CrimeTable.Cols.UUID + " = ?", new String[]{crimeId});
+    }
 
     public Crime getCrime(UUID id) {
         CrimeCursorWrapper cursor = queryCrimes(

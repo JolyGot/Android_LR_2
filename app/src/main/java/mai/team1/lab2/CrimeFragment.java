@@ -36,11 +36,12 @@ import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
 import java.io.File;
 import java.util.List;
+import static java.text.DateFormat.getDateInstance;
 
 
 
 
-public class CrimeFragment extends Fragment {
+public class  CrimeFragment extends Fragment {
     private static final String ARG_CRIME_ID = "crime_id";
     private static final String DIALOG_DATE = "DialogDate";
     private static final int REQUEST_DATE = 0;
