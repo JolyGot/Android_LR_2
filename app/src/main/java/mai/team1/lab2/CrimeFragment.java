@@ -36,6 +36,7 @@ import java.util.UUID;
 import androidx.fragment.app.FragmentManager;
 import java.io.File;
 import java.util.List;
+import static java.text.DateFormat.getDateInstance;
 
 
 
@@ -142,7 +143,7 @@ public class CrimeFragment extends Fragment {
         });
         mDateButton = (Button) v.findViewById(R.id.crime_date);
         updateDate();
-        mDateButton.setText(mCrime.getDate().toString());
+        // mDateButton.setText(mCrime.getDate().toString());
         mDateButton.setText(getDateInstance().format(mCrime.getDate()));
         mDateButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -280,7 +281,7 @@ public class CrimeFragment extends Fragment {
         } else {
             solvedString = getString(R.string.crime_report_unsolved);
         }
-        String dateFormat = "EEE, MMM dd";
+        String dateFormat = getDateInstance().format(mCrime.getDate());
         String dateString = DateFormat.format(dateFormat,
                 mCrime.getDate()).toString();
         String suspect = mCrime.getSuspect();

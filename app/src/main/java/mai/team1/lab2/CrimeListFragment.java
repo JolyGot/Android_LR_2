@@ -23,6 +23,8 @@ import androidx.core.view.MenuItemCompat;
 import android.content.Context;
 import java.util.List;
 import android.text.format.DateFormat;
+import androidx.recyclerview.widget.ItemTouchHelper;
+
 
 
 
@@ -72,6 +74,9 @@ public class CrimeListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         updateUI();
+        CrimeTouchHelper touchHelper = new CrimeTouchHelper(mAdapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(touchHelper);
+        itemTouchHelper.attachToRecyclerView(mCrimeRecyclerView);
     }
 
 
@@ -175,7 +180,7 @@ public class CrimeListFragment extends Fragment {
             }
         }
 
-            private class CrimeAdapter extends RecyclerView.Adapter<CrimeHolder> {
+    class CrimeAdapter extends RecyclerView.Adapter<CrimeHolder> {
                 private List<Crime> mCrimes;
 
                 public CrimeAdapter(List<Crime> crimes) {
@@ -194,6 +199,12 @@ public class CrimeListFragment extends Fragment {
                 public void onBindViewHolder(CrimeHolder holder, int position) {
                     Crime crime = mCrimes.get(position);
                     holder.bindCrime(crime);
+                    holder.itemView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            mCallbacks.onCrimeSelected(crime);
+                        }
+                    });
                 }
 
                 @Override
@@ -204,7 +215,10 @@ public class CrimeListFragment extends Fragment {
                 public void setCrimes(List<Crime> crimes) {
                     mCrimes = crimes;
                 }
-
+                public void deleteCrime(int position) {
+                    CrimeLab.get(getActivity()).deleteCrime(mCrimes.get(position));
+                    updateUI();
+                }
 
 
 
