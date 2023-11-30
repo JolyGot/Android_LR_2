@@ -59,4 +59,15 @@ public class Crime {
     public String getPhotoFilename() {
         return "IMG_" + getId().toString() + ".jpg";
     }
+    private String mPhone;
+    public String getmPhone() {
+        return mPhone;
+    }
+
+    public void setmPhone(String mPhone) {
+        this.mPhone = mPhone;
+    }
 }
+
+
+

@@ -5,7 +5,6 @@ import static java.text.DateFormat.getDateInstance;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,9 +21,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.core.view.MenuItemCompat;
 import android.content.Context;
+import java.text.DateFormat;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.text.DateFormat;
+
 import androidx.recyclerview.widget.ItemTouchHelper;
 
 
@@ -191,7 +195,7 @@ public class CrimeListFragment extends Fragment {
                 itemView.setOnClickListener(this);
 
                 mTitleTextView = (TextView) itemView.findViewById(R.id.crime_title);
-                mDateTextView = (TextView) itemView.findViewById(R.id.crime_date);
+                mDateTextView =  itemView.findViewById(R.id.crime_date);
                 mTimeTextView = (TextView) itemView.findViewById(R.id.crime_time);
 //                mSolvedCheckBox = (CheckBox) itemView.findViewById(R.id.crime_solved);
                 mSolvedImageView = (ImageView) itemView.findViewById(R.id.crime_solved);
@@ -202,12 +206,7 @@ public class CrimeListFragment extends Fragment {
                 mCrime = crime;
                 mTitleTextView.setText(mCrime.getTitle());
                 mSolvedImageView.setVisibility(crime.isSolved() ? View.VISIBLE : View.GONE);
-                Date date = crime.getDate();
-                CharSequence cs = "EEEE, MMMM dd, yyyy";
-                CharSequence re = DateFormat.format(cs,date);
-                String dateFormat = re.toString();
-                mDateTextView.setText(dateFormat);
-                mTimeTextView.setText(DateFormat.format("kk:mm", mCrime.getDate()));
+                mDateTextView.setText(DateFormat.getDateTimeInstance().format(mCrime.getDate()));
             }
             @Override
             public void onClick(View view) {
