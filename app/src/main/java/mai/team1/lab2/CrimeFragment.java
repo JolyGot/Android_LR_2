@@ -30,6 +30,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+import android.view.ViewTreeObserver;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -49,6 +50,7 @@ public class  CrimeFragment extends Fragment {
     private static final String ARG_CRIME_ID = "crime_id";
     private static final String DIALOG_DATE = "DialogDate";
     private static final int REQUEST_DATE = 0;
+    private static final String DIALOG_ZOOM_IMAGE = "DialogZoomDisplay";
 
     private Crime mCrime;
     private File mPhotoFile;
@@ -288,7 +290,21 @@ public class  CrimeFragment extends Fragment {
             }
         });
         mPhotoView = (ImageView) v.findViewById(R.id.crime_photo);
-        updatePhotoView();
+        mPhotoView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                updatePhotoView();
+                mPhotoView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            }
+        });
+
+        mPhotoView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                ImageDialogFragment.newInstance(mPhotoFile).show(fragmentManager, DIALOG_ZOOM_IMAGE);
+            }
+        });
         updateDate();
         return v;
     }
