@@ -3,11 +3,14 @@ package mai.team1.lab2;
 import android.content.Context;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class CrimeLab {
     private static CrimeLab sCrimeLab;
+    private Map<UUID, Crime> mCrimeMap;
     private List<Crime> mCrimes;
     public static CrimeLab get(Context context) {
         if (sCrimeLab == null) {
@@ -18,10 +21,12 @@ public class CrimeLab {
     private CrimeLab(Context context) {
         mCrimes = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
+            mCrimeMap = new HashMap<>();
             Crime crime = new Crime();
             crime.setTitle("Crime #" + i);
             crime.setSolved(i % 2 == 0);
             mCrimes.add(crime);
+            mCrimeMap.put(crime.getId(), crime);
         }
     }
     public List<Crime> getCrimes() {
@@ -33,7 +38,7 @@ public class CrimeLab {
                 return crime;
             }
         }
-        return null;
+        return mCrimeMap.get(id);
     }
 
 }
