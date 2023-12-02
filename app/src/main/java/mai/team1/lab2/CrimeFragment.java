@@ -28,6 +28,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import androidx.core.app.ShareCompat;
 
 import androidx.core.app.ShareCompat;
 import androidx.core.content.FileProvider;
@@ -71,6 +72,7 @@ public class  CrimeFragment extends Fragment {
     private static final String DIALOG_TIME = "time";
     private static final int REQUEST_TIME = -1;
     private Button mTimeButton;
+    private Button mCallButton;
 
     public interface Callbacks {
         void onCrimeUpdated(Crime crime);
@@ -291,6 +293,20 @@ public class  CrimeFragment extends Fragment {
             }
         });
         mPhotoView = (ImageView) v.findViewById(R.id.crime_photo);
+        mCallButton = (Button) v.findViewById(R.id.call_suspect);
+        mCallButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Intent.ACTION_DIAL);
+                Uri phone = Uri.parse("tel:"+mCrime.getmPhone());
+                i.setData(phone);
+                startActivity(i);
+            }
+        });
+
+        if (mCrime.getmPhone() != null) {
+            mCallButton.setText(mCrime.getmPhone());
+        }
         mPhotoView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -330,7 +346,7 @@ public class  CrimeFragment extends Fragment {
         } else if (requestCode == REQUEST_CONTACT && data != null) {
             Uri contactUri = data.getData();
             String[] queryFields = new String[] {
-                    ContactsContract.Contacts.DISPLAY_NAME
+                    ContactsContract.Contacts.DISPLAY_NAME,ContactsContract.Contacts._ID
             };
             Cursor c = getActivity().getContentResolver()
                     .query(contactUri, queryFields, null, null, null);
@@ -343,6 +359,14 @@ public class  CrimeFragment extends Fragment {
                 mCrime.setSuspect(suspect);
                 updateCrime();
                 mSuspectButton.setText(suspect);
+                String contactId = c.getString(1);
+                Cursor phone = getActivity().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
+                        ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId, null, null);
+                if (phone.moveToNext()) {
+                    String mPhone = phone.getString(phone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                    mCrime.setmPhone(mPhone);
+                    mCallButton.setText("call:" + mPhone);
+                }
             } finally {
                 c.close();
             }
