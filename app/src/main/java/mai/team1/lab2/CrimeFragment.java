@@ -298,14 +298,14 @@ public class  CrimeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(Intent.ACTION_DIAL);
-                Uri phone = Uri.parse("tel:"+mCrime.getmPhone());
+                Uri phone = Uri.parse("tel:"+mCrime.getPhone());
                 i.setData(phone);
                 startActivity(i);
             }
         });
 
-        if (mCrime.getmPhone() != null) {
-            mCallButton.setText(mCrime.getmPhone());
+        if (mCrime.getPhone() != null) {
+            mCallButton.setText(mCrime.getPhone());
         }
         mPhotoView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -364,7 +364,7 @@ public class  CrimeFragment extends Fragment {
                         ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId, null, null);
                 if (phone.moveToNext()) {
                     String mPhone = phone.getString(phone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                    mCrime.setmPhone(mPhone);
+                    mCrime.setPhone(mPhone);
                     mCallButton.setText("call:" + mPhone);
                 }
             } finally {

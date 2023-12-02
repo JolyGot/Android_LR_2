@@ -27,7 +27,7 @@ public class CrimeCursorWrapper extends CursorWrapper {
         String suspect = getString(getColumnIndex(CrimeTable.Cols.SUSPECT));
         String phone = getString(getColumnIndex(CrimeTable.Cols.PHONE));
         crime.setSuspect(suspect);
-        crime.setmPhone(phone);
+        crime.setPhone(phone);
         return crime;
 
     }

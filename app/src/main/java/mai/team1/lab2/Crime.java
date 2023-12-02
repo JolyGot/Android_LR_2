@@ -64,8 +64,8 @@ public class Crime {
         return mPhone;
     }
 
-    public void setmPhone(String mPhone) {
-        this.mPhone = mPhone;
+    public void setPhone(String Phone) {
+        mPhone = Phone;
     }
 }
 
